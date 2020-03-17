@@ -24,8 +24,6 @@
 
 #define SIZE 512. // X
 
-// https://cs.lmu.edu/~ray/notes/flightsimulator/
-
 using namespace glimac;
 using namespace std;
 
@@ -108,7 +106,6 @@ int main(int argc, char** argv) {
 	// TODO Change camera
 	EulerCamera camera(SIZE / 2, SIZE / 2, SIZE - 1);
 //	LinearCamera camera(SIZE / 2, SIZE / 2, SIZE - 1);
-	QuaternionCamera test(SIZE / 2, SIZE / 2, SIZE - 1);
 	glm::mat4 viewMatrix = camera.getViewMatrix();
 	glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), windowWidth/windowHeight, 0.1f, 1000.f);
 	glm::mat4 MVMatrix, NormalMatrix;
@@ -122,10 +119,6 @@ int main(int argc, char** argv) {
 	std::chrono::system_clock::time_point b = std::chrono::system_clock::now();
 	constexpr float duration_ms = (1. / FRAMERATE) * 1000.;
 
-	test.testQuaternions();
-	cout << "start drawing " << endl;
-	cout << viewMatrix << endl;
-	cout << test.getViewMatrix() << endl;
 	while(!done) {
 		// sleep if framerate is too high
 		a = std::chrono::system_clock::now();
@@ -160,27 +153,21 @@ int main(int argc, char** argv) {
 				}
 				if(e.key.keysym.sym == SDLK_q) {
 					camera.rotateYaw(0.25);
-					test.rotateYaw(0.25);
 				}
 				if(e.key.keysym.sym == SDLK_d) {
 					camera.rotateYaw(-0.25);
-					test.rotateYaw(-0.25);
 				}
 				if(e.key.keysym.sym == SDLK_z) {
 					camera.rotatePitch(0.25);
-					test.rotatePitch(0.25);
 				}
 				if(e.key.keysym.sym == SDLK_s) {
 					camera.rotatePitch(-0.25);
-					test.rotatePitch(-0.25);
 				}
 				if(e.key.keysym.sym == SDLK_a) {
 					camera.rotateRoll(0.5);
-					test.rotateRoll(0.5);
 				}
 				if(e.key.keysym.sym == SDLK_e) {
 					camera.rotateRoll(-0.5);
-					test.rotateRoll(-0.5);
 				}
 				if(e.key.keysym.sym == SDLK_SPACE) {
 					if(speed > 0) {
@@ -196,12 +183,9 @@ int main(int argc, char** argv) {
 		}
 
 		camera.moveFront(speed, SIZE);
-		test.moveFront(speed, SIZE);
 
 		pos3D = camera.getPosition();
 		viewMatrix = camera.getViewMatrix();
-//		std::cout << camera.getViewMatrix() << endl;
-//		std::cout << test.getViewMatrix() << endl;
 
 		glBindVertexArray(vao);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
