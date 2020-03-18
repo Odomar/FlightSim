@@ -12,11 +12,11 @@ namespace glimac {
 		glm::mat4 matPitch = glm::mat4(1.0f);
 		glm::mat4 matYaw = glm::mat4(1.0f);
 
-		matRoll = glm::rotate(matRoll, roll, glm::vec3(0.0f, 0.0f, 1.0f));
-		matPitch = glm::rotate(matPitch, pitch, glm::vec3(1.0f, 0.0f, 0.0f));
-		matYaw = glm::rotate(matYaw, yaw, glm::vec3(0.0f, 1.0f, 0.0f));
+		matRoll = glm::rotate(matRoll, -roll, glm::vec3(0.0f, 0.0f, 1.0f));
+		matPitch = glm::rotate(matPitch, -pitch, glm::vec3(1.0f, 0.0f, 0.0f));
+		matYaw = glm::rotate(matYaw, -yaw, glm::vec3(0.0f, 1.0f, 0.0f));
 
-		glm::mat4 rotate = matRoll * matPitch * matYaw;
+		glm::mat4 rotate = matYaw * matPitch * matRoll;
 
 		glm::mat4 translate = glm::mat4(1.0f);
 		translate = glm::translate(translate, -position);

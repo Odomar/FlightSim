@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
 	float speed = 0.25;
 	// TODO Change camera
 	EulerCamera camera(SIZE / 2, SIZE / 2, SIZE - 1);
-//	LinearCamera camera(SIZE / 2, SIZE / 2, SIZE - 1);
+//	MatrixCamera camera(SIZE / 2, SIZE / 2, SIZE - 1);
 	glm::mat4 viewMatrix = camera.getViewMatrix();
 	glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), windowWidth/windowHeight, 0.1f, 1000.f);
 	glm::mat4 MVMatrix, NormalMatrix;
