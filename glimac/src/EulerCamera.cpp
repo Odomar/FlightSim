@@ -24,8 +24,8 @@ namespace glimac {
 
 	void EulerCamera::rotateRoll(float degrees) {
 		float angle = (degrees * glm::pi<float>()) / 180.f;
-		upVector = glm::normalize(upVector * glm::cos(angle) + rightVector * glm::sin(angle));
-		rightVector = glm::cross(upVector, frontVector);
+		rightVector = glm::normalize(rightVector * glm::cos(angle) + upVector * glm::sin(angle));
+		upVector = glm::cross(rightVector, frontVector);
 	}
 
 	void EulerCamera::rotatePitch(float degrees) {
