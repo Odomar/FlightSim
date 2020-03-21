@@ -1,12 +1,12 @@
 GOSSET Séverin
 
-Rapport de projet - FlightSim
+# Rapport de projet - FlightSim
 
-# Introdutcion
+## Introduction
 
 Ce projet consiste à implementer un simulateur de vol très simple, en utilisant `Garamon` pour les rotations et `OpenGL` pour l'affichage. L'utilisation de `Garamon` va se faire via les quaternions, qui permettent d'éviter plusieurs problèmes que l'on obtient avec les rotations classiques.
 
-# Le simulateur
+## Le simulateur
 
 Le simulateur de vol consistera en une caméra, qui representera l'avion, et qui va se déplacer en fonction du clavier de l'utilisateur. L'envirronnement, très simple, sera une texture de ciel tout autour de la camera. Pour se deplacer, on utilisera les commandes suivantes :
 
@@ -20,7 +20,7 @@ Ces commandes permettent d'orienter l'avion dans toutes les directions, c'est ce
 
 Le principe du projet va être d'appliquer une rotation sur le bon axe de la caméra quand la touche est pressée. Ces rotations sont définies par l'image suivante :
 
-![Les 3 axes de rotations](images/axes.png){height=200px}
+![Les 3 axes de rotations](images/axes.png){height=150px}
 
 Ces 3 axes permettent d'obtenir ce qu'on appelle les 6 degrés de liberté, on peut tourner dans 6 directions differentes. 
 
@@ -43,6 +43,8 @@ Ensuite, la `viewMatrix` se définit à partir de $R$ et $T$ la matrice de trans
 V = R * T
 \end{equation}
 
+Cette camera a cependant quelques problèmes : si l'on effectue plusieurs rotations dans des sens différents, au bout d'un moment les rotations ne sont plus du tout cohérentes.
+
 ### Euler Camera
 
 La `EulerCamera` repose sur un principe different, les angles d'Euler, qui sont souvent utilisés pour les caméras à la première personne : on garde 3 vecteur orthogonaux $v_{up}$, $v_{right}$ et $v_{front}$, qui representent respectivement comme leur nom l'indique le haut de la caméra, sa droite et son avant. Ces trois vecteurs vont être modifiés lors des rotations, et l'on va ensuite calculer la `viewMatrix` à partir de ces trois vecteurs.
@@ -59,3 +61,45 @@ v_{right} &= v_{up} * v_{front}
 Le principe est que le `Roll` n'est pas censé modifier le vecteur $v_{front}$, puisqu'on tourne autour. Le vecteur $v_{up}$ va subir une rotation autour de cet axe, et le vecteur $v_{right}$ sera le produit en croix des deux autres, puisqu'ils sont orthogonaux entre eux. Pour les deux autres rotations, le raisonnement est annalogue, on change juste les vecteurs.
 
 Lors de l'appel à `getViewMatrix`, on va utiliser ces trois vecteurs ainsi que la position pour calculer la matrice, grâce à la méthode `lookAt` fournie par `OpenGL`.
+
+Ces deux méthodes fonctionnent la plupart du temps, surtout celle avec les angles d'Euler, mais toutes deux sont affectées d'un problème particulier : le bloquage de cardan, ou *Gimbal lock*. Ce problème survient lorsqu'on effectue une rotation de 90 degrés sur un axe, par exemple Y, les rotations sur X et Z auront le même effet sur l'objet, résultant en une perte d'un degré de liberté.
+
+![Bloquage de cardan sur l'axe Y](images/gimbal-lock.png)
+
+### Quaternion Camera
+
+#### Les quaternions
+
+Afin d'eviter ce problème, on utilise les quaternions. Les quaternions sont l'equivalent 3D des nombres complexes. On a cette fois 3 valeurs imaginaires, $i$, $j$, et $k$, ainsi que les relations suivantes :
+
+\begin{equation}
+\begin{aligned}
+i ^ 2 &= j ^ 2 = k ^ 2 = -1\\
+ij &= k\ jk = i\ ki = j\\
+ji &= -k\ kj = -i\ ik = -j
+\end{aligned}
+\end{equation}
+
+On represente un quaternion quelconque $q$ avec un scalaire $w$ et un vecteur $u = (x, y, z)$ : 
+
+\begin{equation}
+q = w + xi + yj + zk
+\end{equation}
+
+Le principe des rotations est de pouvoir faire pivoter un point $p$ autour d'un vecteur $u$ selon un angle $\theta$ en utilisant la relation suivante : 
+
+\begin{equation}
+\begin{aligned}
+q &= \cos{\frac{\theta}{2}} + u \sin{\frac{\theta}{2}}\\
+q^{-1} &= \cos{\frac{\theta}{2}} - u \sin{\frac{\theta}{2}}\\
+p' &= qpq^{-1}
+\end{aligned}
+\end{equation}
+
+...
+
+## Détailes d'implémentations
+
+
+
+## Bibliographie
