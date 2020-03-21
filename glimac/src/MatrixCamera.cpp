@@ -36,10 +36,6 @@ namespace glimac {
 		roll += (degrees * glm::pi<float>()) / 180.f;
 	}
 
-	glm::vec3 MatrixCamera::getPosition() {
-		return position;
-	}
-
 	void MatrixCamera::moveFront(float t, int limit) {
 		glm::vec3 frontVector = -glm::vec3(viewMatrix[0][2], viewMatrix[1][2], viewMatrix[2][2]);
 		position += t * frontVector;

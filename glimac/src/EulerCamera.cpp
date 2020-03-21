@@ -40,10 +40,6 @@ namespace glimac {
 		frontVector = glm::cross(upVector, rightVector);
 	}
 
-	glm::vec3 EulerCamera::getPosition() {
-		return position;
-	}
-
 	glm::mat4 EulerCamera::getViewMatrix() {
 		return glm::lookAt(position, position + frontVector, upVector);
 	}

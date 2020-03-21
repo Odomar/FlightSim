@@ -111,7 +111,6 @@ int main(int argc, char** argv) {
 	glm::mat4 MVMatrix, NormalMatrix;
 
 	int lastMousePosX, lastMousePosY;
-	glm::vec3 pos3D = camera.getPosition();
 
 	//---------------- Application loop --------------------//
 
@@ -184,7 +183,6 @@ int main(int argc, char** argv) {
 
 		camera.moveFront(speed, SIZE);
 
-		pos3D = camera.getPosition();
 		viewMatrix = camera.getViewMatrix();
 
 		glBindVertexArray(vao);

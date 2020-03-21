@@ -12,7 +12,6 @@ namespace glimac {
 		void rotateYaw(float degrees) override;
 		void rotatePitch(float degrees) override;
 		void rotateRoll(float degrees) override;
-		glm::vec3 getPosition() override;
 		glm::mat4 getViewMatrix() override;
 
 	private:
