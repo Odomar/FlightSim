@@ -19,18 +19,10 @@ namespace glimac {
 		return std::cos(0.5 * a) + std::sin(0.5 * a) * B;
 	}
 
-	void QuaternionCamera::rotateAxes(const c3ga::Mvec<float> & PO) {
-		// rotation is around origin so we need to move vectors
-		float x = position[c3ga::E1];
-		float y = position[c3ga::E2];
-		float z = position[c3ga::E3];
-		c3ga::Mvec<float> positionToOrigin = translator(-x, -y, -z);
-		c3ga::Mvec<float> originToPosition = translator(x, y, z);
-
-		c3ga::Mvec<float> M = originToPosition * PO * positionToOrigin;
-		frontVector = M * frontVector / M;
-		rightVector = M * rightVector / M;
-		upVector = M * upVector / M;
+	void QuaternionCamera::rotateAxes(const c3ga::Mvec<float> & R) {
+		frontVector = R * frontVector / R;
+		rightVector = R * rightVector / R;
+		upVector = R * upVector / R;
 	}
 
 	void QuaternionCamera::rotateYaw(float degrees) {

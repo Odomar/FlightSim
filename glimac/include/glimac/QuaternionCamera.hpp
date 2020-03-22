@@ -24,7 +24,7 @@ namespace glimac {
 		c3ga::Mvec<float> upVector = c3ga::e12<float>();
 
 		void clampPosition(int limit);
-		void rotateAxes(const c3ga::Mvec<float> & PO);
+		void rotateAxes(const c3ga::Mvec<float> & R);
 	};
 
 }
